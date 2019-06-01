@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -28,12 +28,18 @@ public class UserController {
         //登录逻辑
         ServerResponse<User> response = iUserService.login(username,password);
         if(response.isSuccess()) {
-            session.setAttribute(Const.CURRENT_USER, response.getData().getUsername());
+            session.setAttribute(Const.CURRENT_USER, response.getData());
         }
         return response;
     }
 
-    @RequestMapping(value = "logout.do",method = RequestMethod.GET)
+    @RequestMapping(value = "register.do",method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse<String> register(User user){
+        return iUserService.register(user);
+    }
+
+    @RequestMapping(value = "logout.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session)
     {
@@ -57,7 +63,7 @@ public class UserController {
         {
             return ServerResponse.createBySuccess("用户信息获取成功",user);
         }
-        return ServerResponse.createByErrorMessage("用户未登录");
+        return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
     }
 
     @RequestMapping(value = "forget_get_question.do",method = RequestMethod.POST)
@@ -122,4 +128,5 @@ public class UserController {
         }
         return iUserService.getInformation(user.getId());
     }
+
 }
