@@ -170,7 +170,7 @@
   </select>
 
   <select id="chechAnswer" resultType="int" parameterType="map">
-    select count (1)
+    select count(1)
     from mmall_user
     where username = #{username} and question = #{question} and answer = #{answer}
   </select>
