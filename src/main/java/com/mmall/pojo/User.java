@@ -28,7 +28,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.phone = phone;
+            this.phone = phone;
         this.question = question;
         this.answer = answer;
         this.role = role;
