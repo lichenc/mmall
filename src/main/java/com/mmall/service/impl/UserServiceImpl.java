@@ -94,8 +94,8 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<String> selectQuestion(String username)
     {
         ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
-        if (!validResponse.isSuccess()){
-            return validResponse;
+        if (validResponse.isSuccess()){
+            return ServerResponse.createByErrorMessage("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
         if (org.apache.commons.lang3.StringUtils.isNotBlank(question))
@@ -124,19 +124,20 @@ public class UserServiceImpl implements IUserService {
         }
 
         ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
-        if (!validResponse.isSuccess()){
-            return validResponse;
+        if (validResponse.isSuccess()){
+            //用户不存在
+            return ServerResponse.createByErrorMessage("用户不存在");
         }
-
         String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
         if (org.apache.commons.lang3.StringUtils.equals(forgetToken ,token)){
-            int resultCount = userMapper.updatePasswordByUsername(username,passwordNew);
+            int resultCount = userMapper.updatePasswordByUsername(username,MD5Util.MD5EncodeUtf8(passwordNew));
             if (resultCount > 0){
                  return ServerResponse.createBySuccessMessage("修改密码成功");
             }
         }else{
             return ServerResponse.createByErrorMessage("token无效，请重新获取toekn");
         }
+
         return ServerResponse.createByErrorMessage("修改密码失败");
     }
 
@@ -184,6 +185,7 @@ public class UserServiceImpl implements IUserService {
         {
             return  ServerResponse.createByErrorMessage("用户不存在");
         }
+        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
     }
 }
