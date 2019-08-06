@@ -13,11 +13,11 @@ public class Const {
 
     public static final String EMAIL = "email";
     public static final String USERNAME = "username";
-
+    //使用set集合而不用list原因是Set contains的时间复杂度是 o 1 ，而List contains的时间复杂度是o n
     public interface ProductListOrderBy{
         Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
     }
-
+    //?? 类里面定义接口里面的值作为常量有什么优势？？
     public interface Cart{
         int CHECKED = 1;//即购物车选中状态
         int UN_CHECKED = 0;//购物车中未选中状态
@@ -31,6 +31,7 @@ public class Const {
         int ROLE_ADMIN = 1;//管理员
     }
 
+    //枚举什么时候使用比较恰当？？
     public enum ProductStatusEnum{
         ON_SALE(1,"在线");
         private String value;
