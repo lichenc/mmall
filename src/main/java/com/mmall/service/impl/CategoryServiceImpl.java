@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         return ServerResponse.createBySuccess(categoryIdList);
     }
-
+    //
     public Set<Category> findChildrenCategoryId(Set<Category> categorySet , Integer categoryId){
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         if (category != null){

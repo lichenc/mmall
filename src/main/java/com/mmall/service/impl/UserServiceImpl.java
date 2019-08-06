@@ -8,7 +8,7 @@ import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements IUserService {
         {
             return ServerResponse.createByErrorMessage("密码错误");
         }
-        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+        user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess("登录成功",user);
     }
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse<String> checkValid(String str ,String type)
     {
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(type))
+        if (StringUtils.isNotBlank(type))
         {
             if(Const.USERNAME.equals(type))
             {
@@ -98,7 +98,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         String question = userMapper.selectQuestionByUsername(username);
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(question))
+        if (StringUtils.isNotBlank(question))
         {
             return ServerResponse.createBySuccess(question);
         }
@@ -119,7 +119,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
-        if (org.apache.commons.lang3.StringUtils.isBlank(forgetToken)){
+        if (StringUtils.isBlank(forgetToken)){
             return ServerResponse.createByErrorMessage("参数错误,token需要传递");
         }
 
@@ -129,7 +129,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("用户不存在");
         }
         String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
-        if (org.apache.commons.lang3.StringUtils.equals(forgetToken ,token)){
+        if (StringUtils.equals(forgetToken ,token)){
             int resultCount = userMapper.updatePasswordByUsername(username,MD5Util.MD5EncodeUtf8(passwordNew));
             if (resultCount > 0){
                  return ServerResponse.createBySuccessMessage("修改密码成功");
@@ -185,7 +185,7 @@ public class UserServiceImpl implements IUserService {
         {
             return  ServerResponse.createByErrorMessage("用户不存在");
         }
-        user.setPassword(org.apache.commons.lang3.StringUtils.EMPTY);
+        user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
     }
 }
