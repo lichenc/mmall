@@ -20,6 +20,19 @@ public class CartController {
     @Autowired
     ICartService iCartService;
 
+    @RequestMapping(value="list.do")
+    @ResponseBody
+    public ServerResponse<CartVo> list(HttpSession session)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iCartService.list(user.getId());
+    }
+
     @RequestMapping(value="add.do")
     @ResponseBody
     public ServerResponse<CartVo> add(HttpSession session , Integer productId, Integer count)
@@ -30,7 +43,7 @@ public class CartController {
         {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iCartService.add(user ,productId ,count);
+        return iCartService.add(user.getId() ,productId ,count);
     }
 
     @RequestMapping(value="update.do")
@@ -43,7 +56,7 @@ public class CartController {
         {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iCartService.update(user ,productId ,count);
+        return iCartService.update(user.getId() ,productId ,count);
     }
 
     @RequestMapping(value="delete_product.do")
@@ -56,6 +69,72 @@ public class CartController {
         {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
         }
-        return iCartService.deleteProduct(user,productIds);
+        return iCartService.deleteProduct(user.getId(),productIds);
     }
+
+    @RequestMapping(value="select.do")
+    @ResponseBody
+    public ServerResponse<CartVo> select(HttpSession session , Integer productId)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iCartService.selectOrUnSelect(user.getId(),productId,Const.Cart.CHECKED);
+    }
+
+    @RequestMapping(value="un_select.do")
+    @ResponseBody
+    public ServerResponse<CartVo> unSelect(HttpSession session , Integer productId)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iCartService.selectOrUnSelect(user.getId() ,productId ,Const.Cart.UN_CHECKED);
+    }
+
+    @RequestMapping(value="select_all.do")
+    @ResponseBody
+    public ServerResponse<CartVo> selectAll(HttpSession session)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iCartService.selectOrUnSelect(user.getId() ,null ,Const.Cart.CHECKED);
+    }
+
+    @RequestMapping(value="un_select_all.do")
+    @ResponseBody
+    public ServerResponse<CartVo> unSelectAll(HttpSession session)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),ResponseCode.NEED_LOGIN.getDesc());
+        }
+        return iCartService.selectOrUnSelect(user.getId() ,null ,Const.Cart.UN_CHECKED);
+    }
+
+    @RequestMapping(value="get_cart_product_count.do")
+    @ResponseBody
+    public ServerResponse<Integer> getCartProducntCount(HttpSession session ,Integer productId)
+    {
+        //判断用户是否登录
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user == null)
+        {
+            return ServerResponse.createBySuccess(0);
+        }
+        return iCartService.getCartProductCount(user.getId());
+    }
+
 }

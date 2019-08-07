@@ -38,4 +38,10 @@ public class BigDecimalUtil {
         BigDecimal b2 = new BigDecimal(v2.toString());
         return b1.divide(b2,2,BigDecimal.ROUND_HALF_UP);
     }
+
+    public static void main(String[] args) {
+        BigDecimal tatolPrice = new BigDecimal("0.00");
+        BigDecimal tatolPrice1 = new BigDecimal(209970.00);
+        System.out.println(tatolPrice.add(tatolPrice1));
+    }
 }

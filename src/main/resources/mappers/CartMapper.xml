@@ -147,4 +147,18 @@
       </foreach>
     </if>
   </delete>
+
+  <update id="checkedcOrUcCheckedProduct" parameterType="map">
+    update mmall_cart
+    set checked = #{checked}
+    where user_id = #{userId}
+    <if test="productId != null">
+      and product_id = #{productId}
+    </if>
+  </update>
+
+  <select id="selectCartProductCount" parameterType="java.lang.Integer" resultType="int">
+    select NULLIF(sum(quantity),0) as count from mmall_cart where user_id =#{userId}
+  </select>
+
 </mapper>
