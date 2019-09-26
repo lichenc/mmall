@@ -11,9 +11,9 @@ public class PayInfo {
 
     private Integer payPlatform;
 
-    private String platformNumber;
+    private String platformNumber;//交易号码
 
-    private String platformStatus;
+    private String platformStatus;//交易状态
 
     private Date createTime;
 
