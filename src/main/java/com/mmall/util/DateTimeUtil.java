@@ -1,15 +1,19 @@
 package com.mmall.util;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DateTimeUtil {
 
-    private static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     //字符串转Date
     public  static Date strToDate(String dateStr ,String dateFormatStr)
     {
@@ -54,5 +58,7 @@ public class DateTimeUtil {
         System.out.println(DateTimeUtil.strToDate("2019-08-01 20:25:25","yyyy-MM-dd HH:mm:ss"));
         System.out.println(DateTimeUtil.dateToStr(new Date()));
         System.out.println(DateTimeUtil.strToDate("2019-08-01 20:25:25"));
+        List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+        CollectionUtils.isNotEmpty(nvps);
     }
 }
